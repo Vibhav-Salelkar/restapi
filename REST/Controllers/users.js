@@ -25,3 +25,11 @@ export const createUser = (req, res) => {
 
     res.send(`user with name ${user.firstName} added successfully`);
 }
+
+export const showUser = (req,res) => {
+    const {id} = req.params;
+
+    const foundUser = users.find(user=> user.id === id);
+
+    res.send(foundUser);
+}
