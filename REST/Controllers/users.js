@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 
-const users = [
+let users = [
     {
         firstName: "John",
         lastName: "Doe",
@@ -32,4 +32,12 @@ export const showUser = (req,res) => {
     const foundUser = users.find(user=> user.id === id);
 
     res.send(foundUser);
+}
+
+export const deleteUser = (req,res) => {
+    const {id} = req.params;
+
+    users = users.filter(user=> user.id !== id);
+
+    res.send(`User with id: ${id} deleted successfully`);
 }
