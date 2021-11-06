@@ -41,3 +41,24 @@ export const deleteUser = (req,res) => {
 
     res.send(`User with id: ${id} deleted successfully`);
 }
+
+export const updateUser = (req,res) => {
+    const {id} = req.params;
+    const {firstName, lastName, age} = req.body;
+
+    const userToUpdate = users.find(user=> user.id === id);
+
+    if(firstName) {
+        userToUpdate.firstName = firstName;
+    }
+
+    if(lastName) {
+        userToUpdate.lastName = lastName;
+    }
+
+    if(age) {
+        userToUpdate.age = age;
+    }
+
+    res.send(`User successfully updated`);
+}
