@@ -2,11 +2,13 @@ import { v4 as uuidv4 } from 'uuid';
 
 let users = [
     {
+        id: '1',
         firstName: "John",
         lastName: "Doe",
         age: 23,
     },
     {
+        id: '2',
         firstName: "Jane",
         lastName: "Doe",
         age: 19,
@@ -23,7 +25,7 @@ export const createUser = (req, res) => {
 
     users.push({id: userId, ...user});
 
-    res.send(`user with name ${user.firstName} added successfully`);
+    res.send({data: users, message:`user with name ${user.firstName} added successfully`});
 }
 
 export const showUser = (req,res) => {
@@ -39,7 +41,7 @@ export const deleteUser = (req,res) => {
 
     users = users.filter(user=> user.id !== id);
 
-    res.send(`User with id: ${id} deleted successfully`);
+    res.send({data: users, message:`User with id: ${id} deleted successfully`});
 }
 
 export const updateUser = (req,res) => {
