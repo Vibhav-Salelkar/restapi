@@ -62,5 +62,5 @@ export const updateUser = (req,res) => {
         userToUpdate.age = age;
     }
 
-    res.send(`User successfully updated`);
+    res.send({data: users, message:`User successfully updated`});
 }

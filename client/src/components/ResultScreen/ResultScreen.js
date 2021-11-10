@@ -5,6 +5,8 @@ import UsersTable from "../UsersTable/UsersTable";
 function ResultScreen() {
   const [users, setUsers] = useState([]);
   const [showUsers, setShowUsers] = useState(false);
+  const [editingUser, seteditingUser] = useState('');
+  const [currentUser, setCurrentUser] = useState('');
   const [formData, setFormData] = useState({
       firstName: '',
       lastName: '',
@@ -22,45 +24,96 @@ function ResultScreen() {
   };
 
   const createUser = async (formData) => {
-    try {
-        const response = await fetch("http://localhost:5000/users", {
-            method: 'POST',
-            body: JSON.stringify({
-                ...formData
-            }),
-            headers: {
-                "Content-type": "application/json; charset=UTF-8"
-            }
-        });
-        const parsedResponse = await response.json();
-        console.log(parsedResponse.data);
-        setUsers(parsedResponse.data);
-      } catch (error) {
-        console.log(error);
+    if(formData.firstName!== '' && formData.lastName!=='') {
+      try {
+          const response = await fetch("http://localhost:5000/users", {
+              method: 'POST',
+              body: JSON.stringify({
+                  ...formData
+              }),
+              headers: {
+                  "Content-type": "application/json; charset=UTF-8"
+              }
+          });
+          const parsedResponse = await response.json();
+          setUsers(parsedResponse.data);
+        } catch (error) {
+          console.log(error);
       } 
+    }
   }
 
   const handleInputChange = (e) => {
     setFormData({...formData, [e.target.name]: e.target.value})
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    createUser(formData);
+  const editUser = async (formData) => {
+    if(formData.firstName!== '' && formData.lastName!=='') {
+      try {
+          const response = await fetch(`http://localhost:5000/users/${editingUser}`, {
+              method: 'PATCH',
+              body: JSON.stringify({
+                  ...formData
+              }),
+              headers: {
+                  "Content-type": "application/json; charset=UTF-8"
+              }
+          });
+          const parsedResponse = await response.json();
+          setUsers(parsedResponse.data);
+        } catch (error) {
+          console.log(error);
+      } 
+    }
   }
 
-  const handleDeleteUser = async(id) => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if(editingUser!== '') {
+      editUser(formData);
+      setFormData({
+        firstName: '',
+        lastName: '',
+        age: 18,
+      })
+      seteditingUser('')
+    }else {
+      createUser(formData);
+      setFormData({
+        firstName: '',
+        lastName: '',
+        age: 18,
+      })
+    }
+  }
+
+  const deleteUser = async(id) => {
     try {
         const response = await fetch(`http://localhost:5000/users/${id}`, {
             method: 'DELETE'
         });
         const parsedResponse = await response.json();
-        console.log(parsedResponse);
         setUsers(parsedResponse.data);
       } catch (error) {
         console.log(error);
       }
   }
+
+  const getUser = async(id) => {
+    seteditingUser(id)
+    try {
+      const response = await fetch(`http://localhost:5000/users/${id}`);
+      const parsedResponse = await response.json();
+      setCurrentUser(parsedResponse);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  //since cannot have multiple setState on below other in getUser
+  useEffect(() => {
+    setFormData(currentUser);
+  }, [currentUser]);
 
   useEffect(() => {
     fetchUsers();
@@ -78,14 +131,14 @@ function ResultScreen() {
       <div>
         {showUsers && (
           <div>
-            <UsersTable rows = {users} handleDeleteUser={handleDeleteUser}/>
+            <UsersTable rows = {users} getUser={getUser} deleteUser={deleteUser} seteditingUser={seteditingUser}/>
           </div>
         )}
       </div>
       <form onSubmit={handleSubmit}>
-          <input type="text" name="firstName" onChange={handleInputChange}/>
-          <input type="text" name="lastName" onChange={handleInputChange}/>
-          <input type="number" name="age" onChange={handleInputChange}/>
+          <input type="text" name="firstName" placeholder="Enter First Name" value={formData.firstName} onChange={handleInputChange}/>
+          <input type="text" name="lastName" placeholder="Enter Last Name" value={formData.lastName} onChange={handleInputChange}/>
+          <input type="number" name="age" placeholder="Enter Age" value={formData.age} onChange={handleInputChange}/>
           <button type="submit">Create User</button>
       </form>
     </div>
