@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useContext} from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,15 +8,18 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import RestData from "../../Container";
 
-export default function UsersTable({rows, deleteUser, getUser, seteditingUser}) {
+export default function UsersTable() {
+
+  const restData = useContext(RestData)
   
   const handleDelete = async (id) => {
-      deleteUser(id)
+    restData.deleteUser(id)
   }
 
   const handleEdit = async (id) => {
-    getUser(id)
+    restData.getUser(id)
   }
 
   return (
@@ -32,7 +35,7 @@ export default function UsersTable({rows, deleteUser, getUser, seteditingUser}) 
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {restData.users.map((row) => (
             <TableRow
               key={row.id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
