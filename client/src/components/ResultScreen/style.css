@@ -1,0 +1,40 @@
+.restForm {
+    margin-top: 5rem;
+    margin-left: 3rem;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+}
+
+.restForm_field {
+    display: block;
+    padding: 10px;
+    border-radius: 5px;
+    border-width: 1px;
+    outline: none;
+}
+
+.restForm_field::placeholder {
+    color: rgb(106, 158, 173);
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.restForm_submit {
+    padding: 10px;
+    width: 40%;
+    align-self: center;
+    background-color: rgb(157, 245, 17);
+    outline: none;
+    border-radius: 5px;
+    border-width: 1px;
+    border-color: rgb(160, 246, 18);
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: 16px;
+    font-weight: 800;
+    color: rgb(3, 88, 10);
+}
+
+.restForm_submit:hover {
+    background-color: rgb(145, 230, 9);
+}
