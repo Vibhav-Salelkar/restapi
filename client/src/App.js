@@ -15,7 +15,7 @@ function App() {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch("http://localhost:5000/users");
+      const response = await fetch("https://app-rest-simple.herokuapp.com/users");
       const parsedResponse = await response.json();
       setUsers(parsedResponse);
     } catch (error) {
@@ -26,7 +26,7 @@ function App() {
   const createUser = async () => {
     if(formData.firstName && formData.lastName) {
       try {
-          const response = await fetch("http://localhost:5000/users", {
+          const response = await fetch("https://app-rest-simple.herokuapp.com/users", {
               method: 'POST',
               body: JSON.stringify({
                   ...formData
@@ -46,7 +46,7 @@ function App() {
   const editUser = async (formData) => {
     if(formData.firstName!== '' && formData.lastName!=='') {
       try {
-          const response = await fetch(`http://localhost:5000/users/${editingUser}`, {
+          const response = await fetch(`https://app-rest-simple.herokuapp.com/users/${editingUser}`, {
               method: 'PATCH',
               body: JSON.stringify({
                   ...formData
@@ -65,7 +65,7 @@ function App() {
 
   const deleteUser = async(id) => {
     try {
-        const response = await fetch(`http://localhost:5000/users/${id}`, {
+        const response = await fetch(`https://app-rest-simple.herokuapp.com/users/${id}`, {
             method: 'DELETE'
         });
         const parsedResponse = await response.json();
@@ -78,7 +78,7 @@ function App() {
   const getUser = async(id) => {
     seteditingUser(id)
     try {
-      const response = await fetch(`http://localhost:5000/users/${id}`);
+      const response = await fetch(`https://app-rest-simple.herokuapp.com/users/${id}`);
       const parsedResponse = await response.json();
       setCurrentUser(parsedResponse);
     } catch (error) {
